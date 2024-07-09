@@ -1,0 +1,9 @@
+POST http://localhost:8080/events/
+content-type: application/jsong
+
+{
+  "name": "Test event",
+  "description": "A test event",
+  "location": "A test location",
+  "dataTime": "2025-01-01T15:30:00.000Z"
+}
