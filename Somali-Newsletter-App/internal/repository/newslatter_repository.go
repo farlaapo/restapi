@@ -7,10 +7,12 @@ import (
 )
 
 // Repository is a generic interface for a data access layer.
-type newsletterRepository interface {
-	Create(ContentCreator *entity.Newsletter) error
-	Update(ContentCreator *entity.Newsletter) error
+type NewsletterRepository interface {
+	Create(newsletter *entity.Newsletter) error
+	Update(newsLatter *entity.Newsletter) error
 	GetAll() ([]*entity.Newsletter, error)
-	GetByID(ContentCreatorID uuid.UUID) (*entity.Newsletter, error)
-	Delete(ContentCreatorID uuid.UUID) error
+	GetByID(newsletterID uuid.UUID) (*entity.Newsletter, error)
+	Delete(NewsletterID uuid.UUID) error
 }
+
+
