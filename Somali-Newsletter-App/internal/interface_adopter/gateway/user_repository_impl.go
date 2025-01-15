@@ -23,13 +23,15 @@ func (r *UserRepositoryImpl) Create(user *entity.User) error {
 		return err
 	}
 
+	user.ID = newUUID
+
 	if user.RoleID == uuid.Nil {
 		return fmt.Errorf("invalid role ID %v", user.RoleID)
 	}
 
 	// insert the user into the database
 	query := `INSERT INTO users (id, name, email, password, role_id, created_at) VALUES ($1, $2, $3, $4, $5, $6)`
-	result, err := r.db.Exec(query, newUUID, user.Name, user.Email, user.Password, user.RoleID, user.CreatedAt)
+	result, err := r.db.Exec(query, user.ID, user.Name, user.Email, user.Password, user.RoleID, user.CreatedAt)
 	if err != nil {
 		return err
 	}

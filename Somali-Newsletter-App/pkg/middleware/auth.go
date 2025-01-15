@@ -3,6 +3,7 @@ package middleware
 import (
 	"Somali-Newsletter-App/internal/repository"
 	"log"
+	"net/http"
 	"strings"
 	"time"
 
@@ -21,10 +22,10 @@ func AuthMiddleware(tokenRepo repository.TokenRepository) gin.HandlerFunc {
 			return
 		}
 		// the token is usauly in the format "Bearer <token>"
-		parts := strings.Split(authHeader, "")
+		parts := strings.Split(authHeader, " ")
 		if len(parts) != 2 || parts[0] != "Bearer" {
-			log.Println("Invalid Authorization format ")
-			c.JSON(401, gin.H{"error": "Invalid Authorization format"})
+			log.Println("Invalid Authorization format")
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization format must be Bearer <token>"})
 			c.Abort()
 			return
 		}

@@ -36,6 +36,7 @@ func (s *newsletterService) CreateNewslatter(title string, content string, creat
 		CreatorID: creatorID,
 		Published: published,
 		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
 	
 	}
 

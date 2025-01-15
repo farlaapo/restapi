@@ -6,7 +6,6 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	
 
 	"github.com/gofrs/uuid"
 )
@@ -26,7 +25,7 @@ func (r *NewsletterRepositoryImpl) Create(newsletter *entity.Newsletter) error {
 
 	newsletter.ID = newUUD
 	query := `INSERT INTO news_latters(id, title, content, creator_id, puplished, created_at)
- VALUES ($1, $2, $3, $4, $5, $6, )`
+ VALUES ($1, $2, $3, $4, $5, $6)`
 	result, err := r.db.Exec(query, newsletter.ID, newsletter.Title, newsletter.Content, newsletter.CreatorID, newsletter.Published, newsletter.CreatedAt)
 	if err != nil {
 		return err
@@ -93,18 +92,18 @@ func (r *NewsletterRepositoryImpl) GetAll() ([]*entity.Newsletter, error) {
 func (r *NewsletterRepositoryImpl) GetByID(newsletterID uuid.UUID) (*entity.Newsletter, error) {
 	var newsLatter entity.Newsletter
 
- err := r.db.QueryRow(`SELECT id, title, content, creator_id, puplished, created_at, updated_at FROM news_latters WHERE id = $1`, newsletterID ).Scan(
-	&newsLatter.ID, &newsLatter.Title, &newsLatter.Content, &newsLatter.CreatorID, &newsLatter.Published,  &newsLatter.CreatedAt, &newsLatter.UpdatedAt)
-if err != nil {
-	if err == sql.ErrNoRows {
-		log.Printf(" No newslatter not found with by ID: %v", newsletterID)
-		return nil, fmt.Errorf("  newslatter not found ")
+	err := r.db.QueryRow(`SELECT id, title, content, creator_id, puplished, created_at, updated_at FROM news_latters WHERE id = $1`, newsletterID).Scan(
+		&newsLatter.ID, &newsLatter.Title, &newsLatter.Content, &newsLatter.CreatorID, &newsLatter.Published, &newsLatter.CreatedAt, &newsLatter.UpdatedAt)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			log.Printf(" No newslatter not found with by ID: %v", newsletterID)
+			return nil, fmt.Errorf("  newslatter not found ")
+		}
+		log.Printf(" Error retrieving newslatter with by ID: %v", err)
+		return nil, err
 	}
-	log.Printf(" Error retrieving newslatter with by ID: %v", err)
-	return nil, err
-}
 
-return &newsLatter, nil
+	return &newsLatter, nil
 
 }
 
@@ -115,7 +114,7 @@ func (r *NewsletterRepositoryImpl) Update(newsLatter *entity.Newsletter) error {
 	SET title = $1, content = $2, creator_id = $3, puplished = $4, updated_at = $5
 	WHERE id = $6`
 
-	result , err := r.db.Exec(query, newsLatter.Title, newsLatter.Content, newsLatter.CreatorID, newsLatter.Published, newsLatter.UpdatedAt )
+	result, err := r.db.Exec(query, newsLatter.Title, newsLatter.Content, newsLatter.CreatorID, newsLatter.Published, newsLatter.UpdatedAt,  newsLatter.ID)
 	if err != nil {
 		return err
 	}
@@ -128,7 +127,6 @@ func (r *NewsletterRepositoryImpl) Update(newsLatter *entity.Newsletter) error {
 	if rowsAffected == 0 {
 		return nil
 	}
-
 
 	return nil
 

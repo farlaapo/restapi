@@ -8,6 +8,7 @@ import (
 	"Somali-Newsletter-App/internal/service"
 	"Somali-Newsletter-App/pkg/config"
 	"log"
+	_ "github.com/lib/pq" 
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"

@@ -14,10 +14,12 @@ RUN go mod download
 COPY . .
 
 # Build the Go application
-RUN go build -o somali-newsletter-app ./cmd/server
+RUN go build -o somali_newsletter_app ./cmd/server
+
 
 # Verify the binary exists (for debugging)
-RUN ls -l /app/somali-newsletter-app
+RUN ls -l somali_newsletter_app
+
 
 # Stage 2: Create a lightweight container to run the application
 FROM alpine:latest
@@ -29,10 +31,12 @@ RUN apk --no-cache add ca-certificates
 WORKDIR /root
 
 # Copy the built application from the `builder` stage
-COPY --from=builder /app/somali-newsletter-app .
+COPY --from=builder /app/somali_newsletter_app .
+
 
 # Expose port 8000 to the outside world
 EXPOSE 8000
 
 # Command to run the application
-CMD ["./somali-newsletter-app"]
+CMD ["./somali_newsletter_app"]
+

@@ -27,9 +27,15 @@ func LoadDBConfig() *DBConfig {
 
 }
 
+//	func (c *DBConfig) ConnectionString() string {
+//		return fmt.Sprintf(
+//			"host=%s port=%s user=%s password=%s dbname=%s sslmod",
+//			c.Host, c.Port, c.User, c.Password, c.DBName,
+//		)
+//	}
 func (c *DBConfig) ConnectionString() string {
 	return fmt.Sprintf(
-		"host=%s port=%s user=%s password=%s dbname=%s sslmod",
-		c.Host, c.Port, c.User, c.Password, c.DBName,
+		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
+		c.Host, c.Port, c.User, c.Password, c.DBName, c.SSLMode,
 	)
 }

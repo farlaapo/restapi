@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+
+	_ "github.com/lib/pq"
 )
 
 func ConnectDB(cfg *config.DBConfig) (*sql.DB, error) {
@@ -35,10 +37,10 @@ func CreateTables(db *sql.DB) error {
 		password VARCHAR(255) NOT NULL,
 		role_id UUID REFERENCES roles(id) ON DELETE CASCADE,
 		created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-		updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-		
+		updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 	);`
 
+	// create newsLatter
 	newsLatter := `CREATE TABLE IF NOT EXISTS news_latters (
 		id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
 		title  VARCHAR(255)  NOT NULL,
@@ -48,18 +50,18 @@ func CreateTables(db *sql.DB) error {
 		deleted_at TIMESTAMP DEFAULT NULL, 
 		created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 		updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-	)`
-
-	userInteraction := `CREATE TABLE IF NOT EXIST user_interactions (
-	  id UUID PRIMARY KEY DEAFAULT uuid_generate_v4(),
-		news_latters_id UUID REFERENCES news_latters(id) ON DELETE CASCADE,
+	);`
+	// create userInteraction
+	userInteraction := `CREATE TABLE IF NOT EXISTS user_interactions (
+	  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+		newslatter_id UUID REFERENCES news_latters(id) ON DELETE CASCADE,
 		user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-		liked BOOLEAN NOT NULL DEAFAULT FALSE,
-		Read  BOOLEAN NOT NULL DEAFAULT FALSE,
+		liked BOOLEAN NOT NULL DEFAULT FALSE,
+		Read  BOOLEAN NOT NULL DEFAULT FALSE,
 	  comment TEXT,
 		created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 		updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-	)`
+	);`
 
 	// Create token table
 	tokenTable := `CREATE TABLE IF NOT EXISTS tokens (
@@ -89,7 +91,6 @@ func CreateTables(db *sql.DB) error {
 	roleTable := `CREATE TABLE IF NOT EXISTS roles (
 		id UUID PRIMARY KEY,
 		name VARCHAR(255) UNIQUE NOT NULL
-
 	);`
 
 	userRoleTable := `CREATE TABLE IF NOT EXISTS user_roles (

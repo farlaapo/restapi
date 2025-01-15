@@ -81,6 +81,9 @@ func (s *userService) RegesterUser(Name string, Email string, Password string, R
 		Email:    Email,
 		Password: hashPassword,
 		RoleID:   RoleID,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+
 	}
 
 	// save user

@@ -27,7 +27,7 @@ services:
       DB_USER: root
       DB_PASSWORD: root
       DB_NAME: somali_newsletter_app
-      DB_SSLMODE: disable
+      DB_SSL_MODE: disable
     volumes:
       - ../pkg/config/.env:/app/.env
     depends_on:
